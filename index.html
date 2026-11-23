@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b5e3b">
+<title>Cari Surat Masuk Bidang – DLHK Provinsi Jawa Tengah</title>
+<style>
+:root{
+  --g900:#0f3d27;--g800:#14532d;--g700:#1b6b3f;--g600:#238a52;--g500:#2fa365;
+  --g100:#dcf3e5;--g50:#f1faf4;--bg:#f3f6f4;--card:#fff;--ink:#1c2a22;--mute:#5d6f64;
+  --line:#dbe5de;--warn:#b45309;--warnbg:#fef3c7;--err:#b91c1c;--errbg:#fee2e2;
+  --blue:#1d4ed8;--blueBg:#dbeafe;--amber:#92400e;--amberBg:#fde9c4;
+  --r:14px;--sh:0 1px 2px rgba(15,61,39,.08),0 4px 14px rgba(15,61,39,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+button{font:inherit;cursor:pointer}
+header.top{background:linear-gradient(135deg,var(--g900),var(--g700));color:#fff;padding:14px 16px 0;position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.wrap{max-width:1080px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand h1{margin:0;font-size:18px;line-height:1.2;font-weight:700}
+.brand small{display:block;font-weight:400;opacity:.8;font-size:12px}
+.logo{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:21px;flex:none}
+.spacer{flex:1}
+.btn{border:0;border-radius:10px;padding:8px 14px;font-weight:600;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:.15s;white-space:nowrap}
+.btn-reload{background:rgba(255,255,255,.18);color:#fff}
+.btn-reload:hover{background:rgba(255,255,255,.3)}
+.btn-primary{background:var(--g700);color:#fff}
+.btn-primary:hover{background:var(--g800)}
+.btn-ghost{background:var(--g50);color:var(--g800);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--g100)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.searchbox{margin:12px 0 10px;position:relative}
+.searchbox input{width:100%;border:0;border-radius:12px;padding:14px 44px 14px 44px;font-size:16px;outline:none;box-shadow:0 2px 8px rgba(0,0,0,.18);color:var(--ink)}
+.searchbox input:focus{box-shadow:0 0 0 3px rgba(255,255,255,.55),0 2px 8px rgba(0,0,0,.18)}
+.searchbox .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;opacity:.6}
+.searchbox .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#e8efe9;border-radius:50%;width:28px;height:28px;color:var(--mute);display:none}
+.tabs{display:flex;gap:4px}
+.tab{background:transparent;border:0;color:#cfe8d9;padding:9px 16px;border-radius:10px 10px 0 0;font-weight:600}
+.tab.on{background:var(--bg);color:var(--g800)}
+main.wrap{padding:14px 16px 60px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;box-shadow:var(--sh);margin-bottom:12px}
+.filters{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:end}
+.filters label{font-size:11.5px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:3px}
+select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.chips .lbl{font-size:12px;color:var(--mute);font-weight:700;margin-right:2px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--g800);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+.chip:hover{background:var(--g50)}
+.chip.on{background:var(--g700);color:#fff;border-color:var(--g700)}
+.stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0 12px;font-size:13.5px;color:var(--mute)}
+.stat{background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 12px}
+.stat b{color:var(--g800)}
+.banner{border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px}
+.banner.err{background:var(--errbg);color:var(--err);border:1px solid #fca5a5}
+.banner.warn{background:var(--warnbg);color:var(--warn);border:1px solid #fcd34d}
+.banner ul{margin:6px 0 0 18px;padding:0}
+.banner .btn{margin-top:8px}
+.card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--g600);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh);display:grid;grid-template-columns:auto 1fr;gap:14px}
+.card.st-belum{border-left-color:#d97706}
+.card.st-done{border-left-color:var(--g500)}
+.nobox{text-align:center;min-width:74px}
+.nobox .no{background:var(--g800);color:#fff;border-radius:12px;padding:8px 10px;font-size:22px;font-weight:800;line-height:1.1;letter-spacing:-.02em}
+.nobox .cap{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin-top:4px;font-weight:700}
+.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--g100);color:var(--g800)}
+.badge.seksi{background:var(--blueBg);color:var(--blue)}
+.badge.belum{background:var(--amberBg);color:var(--amber)}
+.badge.done{background:var(--g800);color:#fff}
+.badge.date{background:#eef2ef;color:var(--mute);font-weight:600}
+.perihal{font-weight:650;font-size:16px;line-height:1.4;margin:2px 0 6px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:4px 18px;font-size:13.5px;margin-bottom:8px}
+.kv span{color:var(--mute);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;display:block}
+.kv div{word-break:break-word}
+.dispo{background:var(--g50);border:1px dashed #a8d5b8;border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:10px;white-space:pre-wrap;word-break:break-word}
+.dispo .h{font-size:11.5px;font-weight:800;color:var(--g700);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:2px}
+.dispo.empty{background:#fafafa;border-color:var(--line);color:var(--mute);font-style:italic}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+mark{background:#fde047;color:#1c1917;border-radius:3px;padding:0 1px}
+.empty,.loading{text-align:center;padding:48px 16px;color:var(--mute)}
+.loading .spin{width:30px;height:30px;border-width:3px;color:var(--g600);margin-bottom:10px}
+.more{text-align:center;margin:14px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);background:var(--g900);color:#fff;padding:10px 18px;border-radius:999px;opacity:0;transition:.25s;z-index:50;pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.hidden{display:none!important}
+.perling{grid-template-columns:auto 1fr}
+.hint{font-size:12px;color:var(--mute);margin-top:6px}
+footer{text-align:center;color:var(--mute);font-size:12px;padding:10px}
+@media(max-width:760px){
+  .filters{grid-template-columns:1fr 1fr}
+  .filters .reset{grid-column:1/-1}
+  .card{grid-template-columns:1fr;gap:8px}
+  .nobox{display:flex;align-items:center;gap:10px;text-align:left}
+  .nobox .cap{margin:0}
+  .nobox .no{font-size:18px;padding:5px 12px}
+  .brand h1{font-size:16px}
+  .btn-reload .t{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">🌿</div>
+      <h1>Surat Masuk Bidang<small>DLHK Provinsi Jawa Tengah</small></h1>
+      <div class="spacer"></div>
+      <button class="btn btn-reload" id="reload" title="Muat ulang data (abaikan cache)"><span id="reloadIc">⟳</span><span class="t">Muat Ulang Data</span></button>
+    </div>
+    <div class="searchbox">
+      <span class="ic">🔍</span>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" autofocus
+        placeholder="Cari: no. agenda, nomor surat, asal, perihal, petugas…  (contoh: pentawira 2026)">
+      <button class="clr" id="clr" aria-label="Hapus pencarian">✕</button>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-tab="surat">📨 Surat Masuk</button>
+      <button class="tab" data-tab="perling">📑 Arahan Perling</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="banner"></div>
+
+  <!-- ===== TAB SURAT ===== -->
+  <section id="tab-surat">
+    <div class="panel">
+      <div class="filters">
+        <div><label for="fYear">Tahun</label><select id="fYear"><option value="">Semua</option></select></div>
+        <div><label for="fMonth">Bulan</label><select id="fMonth"><option value="">Semua</option></select></div>
+        <div><label for="fSeksi">Seksi</label><select id="fSeksi"><option value="">Semua</option></select></div>
+        <div><label for="fStatus">Status</label>
+          <select id="fStatus">
+            <option value="">Semua</option>
+            <option value="belum">Belum Disposisi</option>
+            <option value="sudah">Sudah Disposisi</option>
+            <option value="done">Terlaksana</option>
+            <option value="notdone">Sudah Disposisi, belum Terlaksana</option>
+          </select></div>
+        <div class="reset"><button class="btn btn-ghost" id="reset" style="width:100%;justify-content:center">Reset</button></div>
+      </div>
+      <div class="chips">
+        <span class="lbl">Pintasan:</span>
+        <button class="chip" data-quick="laporgub">LaporGub</button>
+        <button class="chip" data-quick="sanksi">Sanksi / Pengawasan</button>
+        <button class="chip" data-quick="undangan">Undangan</button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div id="list"></div>
+    <div class="more hidden" id="more"><button class="btn btn-ghost" id="moreBtn">Tampilkan lebih banyak</button></div>
+  </section>
+
+  <!-- ===== TAB PERLING ===== -->
+  <section id="tab-perling" class="hidden">
+    <div class="stats" id="statsP"></div>
+    <div id="listP"></div>
+  </section>
+</main>
+<footer>Data real-time dari Google Sheets · <span id="updated">belum dimuat</span></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= KONFIGURASI ================= */
+const CFG = {
+  SHEET_ID: '1Xn_RQP_yIH67sIC0lg2hVyO6wSitcfb3KKMcR8fTc0Y',
+  FOLDER_URL: 'https://drive.google.com/drive/folders/1NRbZvb_2pwborU4Ep1kbmMbuDOIWjsZ8',
+  SHEET_MAIN: 'Form responses',
+  SHEET_PERLING: 'Arahan Perling',
+  // Opsional: isi GID (angka di URL "#gid=...") bila pembacaan lewat nama sheet gagal
+  GID_MAIN: '',
+  GID_PERLING: '',
+  PAGE: 40,
+  CACHE_KEY: 'suratBidangCache_v1'
+};
+const QUICK = {
+  laporgub: /lapor\s*-?\s*gub/i,
+  sanksi: /sanksi|pengawasan|paksaan|teguran|pemantauan|penaatan|pengaduan/i,
+  undangan: /undang|mengundang|rapat|sosialisasi|bimtek|workshop|audiensi/i
+};
+const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const MON_MAP = {jan:0,januari:0,january:0,feb:1,februari:1,february:1,mar:2,maret:2,march:2,apr:3,april:3,mei:4,may:4,jun:5,juni:5,june:5,jul:6,juli:6,july:6,agu:7,agt:7,agustus:7,aug:7,august:7,sep:8,sept:8,september:8,okt:9,oktober:9,oct:9,october:9,nov:10,november:10,des:11,desember:11,dec:11,december:11};
+
+/* ================= UTIL ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const firstUrl = s => { const m = String(s || '').match(/https?:\/\/[^\s,;"'<>]+/); return m ? m[0] : ''; };
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('show'),2600); }
+
+async function copyText(text){
+  try{ await navigator.clipboard.writeText(text); return true; }catch(e){}
+  try{
+    const ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); const ok=document.execCommand('copy'); ta.remove(); return ok;
+  }catch(e){ return false; }
+}
+
+function parseDate(s){
+  s = String(s||'').trim(); if(!s) return null;
+  let m = s.match(/(\d{1,4})[\/\-.](\d{1,2})[\/\-.](\d{1,4})/);
+  if(m){
+    let a=+m[1], b=+m[2], c=+m[3], y,mo,d;
+    if(m[1].length===4){ y=a; mo=b; d=c; }
+    else{
+      y = m[3].length===2 ? 2000+c : c;
+      if(a>12){ d=a; mo=b; } else if(b>12){ mo=a; d=b; } else { d=a; mo=b; }
+    }
+    const dt=new Date(y,mo-1,d); return isNaN(dt)?null:dt;
+  }
+  m = s.match(/(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})/);
+  if(m){ const mo=MON_MAP[m[2].toLowerCase()]; if(mo!==undefined) return new Date(+m[3],mo,+m[1]); }
+  return null;
+}
+const fmtDate = (d, raw) => d ? d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : (raw||'');
+
+/* ================= AMBIL DATA ================= */
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; }
+      else cur+=c;
+    }else if(c==='"') q=true;
+    else if(c===','){ row.push(cur); cur=''; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; }
+    else cur+=c;
+  }
+  if(cur!==''||row.length){ row.push(cur); rows.push(row); }
+  return rows;
+}
+
+function sheetUrl(name, gid, fmt){
+  const base = `https://docs.google.com/spreadsheets/d/${CFG.SHEET_ID}/gviz/tq?tqx=${fmt}`;
+  return base + (gid ? `&gid=${encodeURIComponent(gid)}` : `&sheet=${encodeURIComponent(name)}`) + `&_=${Date.now()}`;
+}
+
+async function viaCSV(name, gid){
+  const res = await fetch(sheetUrl(name,gid,'out:csv'), {cache:'no-store'});
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  const txt = await res.text();
+  if(/^\s*<(!doctype|html)/i.test(txt)) throw new Error('Google meminta login — sheet belum publik');
+  return parseCSV(txt);
+}
+
+function viaJSONP(name, gid){
+  return new Promise((resolve,reject)=>{
+    const cb='__gv'+Math.random().toString(36).slice(2);
+    const s=document.createElement('script');
+    const cleanup=()=>{ delete window[cb]; s.remove(); clearTimeout(tm); };
+    const tm=setTimeout(()=>{cleanup();reject(new Error('Waktu habis (timeout)'));},20000);
+    window[cb]=resp=>{
+      cleanup();
+      if(!resp||resp.status==='error'){ reject(new Error((resp&&resp.errors&&resp.errors[0]&&resp.errors[0].detailed_message)||'Respons error dari Google')); return; }
+      const t=resp.table;
+      const head=t.cols.map(c=>c.label||'');
+      const body=t.rows.map(r=>(r.c||[]).map(c=>c?(c.f!=null?c.f:(c.v!=null?c.v:'')):''));
+      resolve([head,...body].map(r=>r.map(String)));
+    };
+    s.onerror=()=>{cleanup();reject(new Error('Tidak dapat terhubung ke Google Sheets'));};
+    s.src=sheetUrl(name,gid,`out:json;responseHandler:${cb}`)+'&headers=1';
+    document.head.appendChild(s);
+  });
+}
+
+async function loadSheet(name,gid){
+  let e1;
+  try{ return await viaCSV(name,gid); }catch(e){ e1=e; }
+  try{ return await viaJSONP(name,gid); }catch(e2){ throw new Error(`${e1.message}; cadangan: ${e2.message}`); }
+}
+
+/* ================= OLAH DATA ================= */
+let SURAT=[], PERLING=[], VIEW=[], shown=CFG.PAGE;
+const state={tab:'surat',q:'',year:'',month:'',seksi:'',status:'',quick:null};
+
+function buildSurat(rows){
+  if(!rows.length) return [];
+  const H=rows[0].map(norm);
+  const col=(pred,fb)=>{const i=H.findIndex(pred);return i>=0?i:fb;};
+  const c={
+    no:0,
+    terima:col(h=>h.includes('tanggalterima')||h==='tglterima',1),
+    tglSurat:col(h=>h.includes('tanggalsurat')||h==='tglsurat',2),
+    agenda:col(h=>h.includes('nomoragenda')||h.includes('noagenda'),3),
+    asal:col(h=>h.includes('asalsurat')||h==='asal',4),
+    perihal:col(h=>h.includes('perihal'),5),
+    nosurat:col(h=>h.includes('nomorsurat')||h==='nosurat',6),
+    dispo:col(h=>h.includes('disposisi'),7),
+    done:col(h=>h.includes('terlaksana'),8),
+    seksi:col(h=>h==='seksi',9),
+    link:col(h=>h.includes('linkscan')||h==='link'||h.includes('scan'),-1)
+  };
+  if(H.findIndex(h=>h.includes('perihal'))<0) throw new Error('Kolom "PERIHAL" tidak ditemukan — pastikan nama sheet "'+CFG.SHEET_MAIN+'" benar.');
+  const g=(r,i)=>i>=0?String(r[i]??'').trim():'';
+  const out=[];
+  rows.slice(1).forEach((r,idx)=>{
+    const o={
+      no:g(r,c.no), terimaRaw:g(r,c.terima), tglSuratRaw:g(r,c.tglSurat), agenda:g(r,c.agenda),
+      asal:g(r,c.asal), perihal:g(r,c.perihal), nosurat:g(r,c.nosurat), dispo:g(r,c.dispo),
+      done:g(r,c.done), seksi:g(r,c.seksi), link:firstUrl(g(r,c.link)), row:idx+2
+    };
+    if(!o.no&&!o.asal&&!o.perihal&&!o.nosurat) return;
+    o.terima=parseDate(o.terimaRaw); o.tglSurat=parseDate(o.tglSuratRaw);
+    o.noNum=parseInt(o.no.replace(/\D/g,''),10); if(isNaN(o.noNum)) o.noNum=-1;
+    o.y=o.terima?o.terima.getFullYear():''; o.m=o.terima?o.terima.getMonth():'';
+    const dn=norm(o.done);
+    o.isDone = !!dn && !/^(belum|tidak|no|false|0|x|-)/.test(o.done.toLowerCase());
+    o.hasDispo = !!o.dispo;
+    o.st = o.isDone ? 'done' : (o.hasDispo ? 'sudah' : 'belum');
+    o.hay = [o.no,o.agenda,o.asal,o.perihal,o.nosurat,o.dispo,o.done,o.seksi,o.terimaRaw,o.tglSuratRaw,
+      fmtDate(o.terima,''), o.terima?MONTHS[o.m]:'', o.y].join('   ').toLowerCase();
+    out.push(o);
+  });
+  out.sort((a,b)=>((b.terima?+b.terima:0)-(a.terima?+a.terima:0))||(b.noNum-a.noNum)||(b.row-a.row));
+  return out;
+}
+
+function buildPerling(rows){
+  if(!rows.length) return [];
+  const H=rows[0].map(norm);
+  if(!H.some(h=>h.includes('dokumen'))) throw new Error('Sheet "'+CFG.SHEET_PERLING+'" tidak ditemukan atau kolom "Dokumen" tidak ada.');
+  const col=(p,fb)=>{const i=H.findIndex(p);return i>=0?i:fb;};
+  const c={no:col(h=>h==='no',0),dok:col(h=>h.includes('dokumen'),1),ket:col(h=>h.includes('keterangan'),2),tgl:col(h=>h.includes('tgl')||h.includes('tanggal'),3),link:col(h=>h.includes('link'),4)};
+  const out=[];
+  rows.slice(1).forEach(r=>{
+    const o={no:String(r[c.no]||'').trim(),dok:String(r[c.dok]||'').trim(),ket:String(r[c.ket]||'').trim(),tglRaw:String(r[c.tgl]||'').trim(),link:firstUrl(r[c.link])};
+    if(!o.dok&&!o.ket&&!o.no) return;
+    o.tgl=parseDate(o.tglRaw);
+    o.hay=[o.no,o.dok,o.ket,o.tglRaw,fmtDate(o.tgl,'')].join(' ').toLowerCase();
+    out.push(o);
+  });
+  return out;
+}
+
+/* ================= TAMPILAN ================= */
+function tokens(){ return state.q.toLowerCase().split(/\s+/).filter(Boolean); }
+
+function hl(text,toks){
+  text=String(text??'');
+  if(!toks.length||!text) return esc(text);
+  const re=new RegExp('('+toks.map(reEsc).sort((a,b)=>b.length-a.length).join('|')+')','gi');
+  let out='',last=0,m;
+  while((m=re.exec(text))){
+    if(m[0]==='') {re.lastIndex++;continue;}
+    out+=esc(text.slice(last,m.index))+'<mark>'+esc(m[0])+'</mark>'; last=m.index+m[0].length;
+  }
+  return out+esc(text.slice(last));
+}
+
+function applyFilters(){
+  const toks=tokens(); const {year,month,seksi,status,quick}=state;
+  let res=SURAT.filter(o=>{
+    if(year!==''&&String(o.y)!==year) return false;
+    if(month!==''&&String(o.m)!==month) return false;
+    if(seksi&&o.seksi.toLowerCase()!==seksi.toLowerCase()) return false;
+    if(status==='belum'&&o.st!=='belum') return false;
+    if(status==='sudah'&&o.st==='belum') return false;
+    if(status==='done'&&o.st!=='done') return false;
+    if(status==='notdone'&&o.st!=='sudah') return false;
+    if(quick&&!QUICK[quick].test(o.perihal+' '+o.asal+' '+o.dispo)) return false;
+    for(const t of toks) if(!o.hay.includes(t)) return false;
+    return true;
+  });
+  // nomor agenda yang persis sama dengan kata kunci → tampil paling atas
+  if(toks.length===1&&/^\d+$/.test(toks[0])){
+    const exact=res.filter(o=>o.no===toks[0]||o.agenda===toks[0]);
+    if(exact.length) res=[...exact,...res.filter(o=>!exact.includes(o))];
+  }
+  VIEW=res; shown=CFG.PAGE;
+  renderList(); renderStats();
+}
+
+function card(o,toks){
+  const stBadge=o.st==='done'?'<span class="badge done">✔ Terlaksana</span>':o.st==='sudah'?'<span class="badge">Sudah Disposisi</span>':'<span class="badge belum">Belum Disposisi</span>';
+  const pdf=o.link
+    ? `<a class="btn btn-primary" href="${esc(o.link)}" target="_blank" rel="noopener">📄 Buka Scan PDF</a>
+       <button class="btn btn-ghost" data-folder="${esc(o.no)}">📁 Cari di Folder Drive Scan</button>`
+    : `<button class="btn btn-primary" data-folder="${esc(o.no)}">📁 Cari di Folder Drive Scan</button>`;
+  return `<article class="card st-${o.st==='done'?'done':o.st==='belum'?'belum':'sudah'}">
+    <div class="nobox"><div class="no">${hl(o.no||'–',toks)}</div><div class="cap">No. Agenda<br>Bidang</div></div>
+    <div>
+      <div class="meta">
+        <span class="badge date">📥 Terima ${esc(fmtDate(o.terima,o.terimaRaw)||'–')}</span>
+        ${o.seksi?`<span class="badge seksi">${hl(o.seksi,toks)}</span>`:''}
+        ${stBadge}
+      </div>
+      <div class="perihal">${hl(o.perihal||'(tanpa perihal)',toks)}</div>
+      <div class="kv">
+        <div><span>Asal Surat</span>${hl(o.asal||'–',toks)}</div>
+        <div><span>Nomor Surat</span>${hl(o.nosurat||'–',toks)}</div>
+        <div><span>Tanggal Surat</span>${esc(fmtDate(o.tglSurat,o.tglSuratRaw)||'–')}</div>
+        <div><span>No. Agenda TU/Dinas</span>${hl(o.agenda||'–',toks)}</div>
+        ${o.done?`<div><span>Terlaksana</span>${hl(o.done,toks)}</div>`:''}
+      </div>
+      <div class="dispo ${o.dispo?'':'empty'}"><span class="h">Disposisi / Petugas</span>${o.dispo?hl(o.dispo,toks):'Belum ada disposisi'}</div>
+      <div class="acts">${pdf}</div>
+    </div></article>`;
+}
+
+function renderList(){
+  const box=$('#list'); const toks=tokens();
+  if(!SURAT.length){ return; }
+  if(!VIEW.length){ box.innerHTML='<div class="empty">😕 Tidak ada surat yang cocok.<br>Coba kurangi kata kunci atau klik <b>Reset</b>.</div>'; $('#more').classList.add('hidden'); return; }
+  box.innerHTML=VIEW.slice(0,shown).map(o=>card(o,toks)).join('');
+  $('#more').classList.toggle('hidden',shown>=VIEW.length);
+}
+
+function renderStats(){
+  const done=VIEW.filter(o=>o.st==='done').length, belum=VIEW.filter(o=>o.st==='belum').length;
+  const filtered=VIEW.length!==SURAT.length;
+  $('#stats').innerHTML=`<span class="stat">Total surat: <b>${SURAT.length}</b></span>
+    <span class="stat">${filtered?'Hasil pencarian':'Ditampilkan'}: <b>${VIEW.length}</b></span>
+    <span class="stat">Terlaksana: <b>${done}</b></span>
+    <span class="stat">Belum disposisi: <b>${belum}</b></span>`;
+}
+
+function renderPerling(){
+  const toks=tokens();
+  const rows=PERLING.filter(o=>toks.every(t=>o.hay.includes(t)));
+  $('#statsP').innerHTML=`<span class="stat">Total arahan: <b>${PERLING.length}</b></span><span class="stat">Hasil pencarian: <b>${rows.length}</b></span>`;
+  if(!PERLING.length){ $('#listP').innerHTML='<div class="empty">Belum ada data Arahan Perling.</div>'; return; }
+  if(!rows.length){ $('#listP').innerHTML='<div class="empty">😕 Tidak ada arahan yang cocok.</div>'; return; }
+  $('#listP').innerHTML=rows.map(o=>`<article class="card perling">
+    <div class="nobox"><div class="no">${hl(o.no||'–',toks)}</div><div class="cap">No.</div></div>
+    <div>
+      <div class="meta"><span class="badge date">🗓 Pengawasan ${esc(fmtDate(o.tgl,o.tglRaw)||'–')}</span></div>
+      <div class="perihal">${hl(o.dok||'–',toks)}</div>
+      ${o.ket?`<div class="dispo"><span class="h">Keterangan</span>${hl(o.ket,toks)}</div>`:''}
+      <div class="acts">${o.link?`<a class="btn btn-primary" href="${esc(o.link)}" target="_blank" rel="noopener">📎 Lihat Dokumen</a>`:'<span class="hint">Link dokumen belum diisi</span>'}</div>
+    </div></article>`).join('');
+}
+
+function fillFilters(){
+  const years=[...new Set(SURAT.map(o=>o.y).filter(v=>v!==''))].sort((a,b)=>b-a);
+  const seksi=[...new Set(SURAT.map(o=>o.seksi).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  $('#fYear').innerHTML='<option value="">Semua</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  $('#fMonth').innerHTML='<option value="">Semua</option>'+MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join('');
+  $('#fSeksi').innerHTML='<option value="">Semua</option>'+seksi.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('#fYear').value=state.year; $('#fMonth').value=state.month; $('#fSeksi').value=state.seksi;
+}
+
+function renderAll(){
+  fillFilters(); applyFilters(); renderPerling();
+}
+
+/* ================= MUAT DATA ================= */
+function showBanner(kind,html){ $('#banner').innerHTML=html?`<div class="banner ${kind}">${html}</div>`:''; }
+function setLoading(on){
+  const b=$('#reload'); b.disabled=on; $('#reloadIc').innerHTML=on?'<span class="spin"></span>':'⟳';
+  if(on&&!SURAT.length) $('#list').innerHTML='<div class="loading"><div class="spin"></div><div>Memuat data surat dari Google Sheets…</div></div>';
+}
+
+async function loadAll(){
+  setLoading(true); showBanner('','');
+  const errors=[];
+  const [rm,rp]=await Promise.allSettled([loadSheet(CFG.SHEET_MAIN,CFG.GID_MAIN),loadSheet(CFG.SHEET_PERLING,CFG.GID_PERLING)]);
+  let rawMain=null,rawP=null;
+  if(rm.status==='fulfilled'){
+    try{ SURAT=buildSurat(rm.value); rawMain=rm.value; }catch(e){ errors.push(`<b>Surat Masuk:</b> ${esc(e.message)}`); }
+  }else errors.push(`<b>Surat Masuk:</b> ${esc(rm.reason.message)}`);
+  if(rp.status==='fulfilled'){
+    try{ PERLING=buildPerling(rp.value); rawP=rp.value; }catch(e){ errors.push(`<b>Arahan Perling:</b> ${esc(e.message)}`); }
+  }else errors.push(`<b>Arahan Perling:</b> ${esc(rp.reason.message)}`);
+
+  if(rawMain||rawP){
+    try{ localStorage.setItem(CFG.CACHE_KEY,JSON.stringify({t:Date.now(),main:rawMain||JSON.parse(localStorage.getItem(CFG.CACHE_KEY)||'{}').main,perling:rawP||JSON.parse(localStorage.getItem(CFG.CACHE_KEY)||'{}').perling})); }catch(e){}
+    $('#updated').textContent='diperbarui '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  }
+  renderAll();
+  if(errors.length){
+    const hasData=SURAT.length||PERLING.length;
+    showBanner(hasData?'warn':'err',
+      `<b>⚠ ${hasData?'Sebagian data gagal dimuat':'Gagal mengambil data dari Google Sheets'}</b><ul><li>${errors.join('</li><li>')}</li></ul>
+       <div class="hint" style="color:inherit">Periksa: (1) koneksi internet, (2) spreadsheet sudah di-<i>Publish to web</i> / dapat dilihat siapa saja yang memiliki link, (3) nama sheet tidak berubah.${hasData?' Data yang tampil berasal dari muatan terakhir.':''}</div>
+       <button class="btn btn-ghost" onclick="loadAll()">⟳ Coba lagi</button>`);
+    if(!SURAT.length) $('#list').innerHTML='';
+  }
+  setLoading(false);
+}
+
+function loadCache(){
+  try{
+    const c=JSON.parse(localStorage.getItem(CFG.CACHE_KEY)||'null'); if(!c) return;
+    if(c.main) SURAT=buildSurat(c.main);
+    if(c.perling) PERLING=buildPerling(c.perling);
+    $('#updated').textContent='cache '+new Date(c.t).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' (memperbarui…)';
+    renderAll();
+  }catch(e){}
+}
+
+/* ================= EVENT ================= */
+let deb;
+$('#q').addEventListener('input',e=>{
+  state.q=e.target.value.trim(); $('#clr').style.display=e.target.value?'block':'none';
+  clearTimeout(deb); deb=setTimeout(()=>{ state.tab==='surat'?applyFilters():renderPerling(); },90);
+});
+$('#clr').onclick=()=>{ $('#q').value=''; $('#q').dispatchEvent(new Event('input')); $('#q').focus(); };
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='SELECT'){ e.preventDefault(); $('#q').focus(); $('#q').select(); }
+  if(e.key==='Escape'&&document.activeElement===$('#q')) $('#clr').click();
+});
+[['fYear','year'],['fMonth','month'],['fSeksi','seksi'],['fStatus','status']].forEach(([id,k])=>$('#'+id).addEventListener('change',e=>{state[k]=e.target.value;applyFilters();}));
+document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+  const k=ch.dataset.quick; state.quick=state.quick===k?null:k;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.quick===state.quick));
+  applyFilters();
+});
+$('#reset').onclick=()=>{
+  Object.assign(state,{q:'',year:'',month:'',seksi:'',status:'',quick:null});
+  $('#q').value=''; $('#clr').style.display='none';
+  ['fYear','fMonth','fSeksi','fStatus'].forEach(id=>$('#'+id).value='');
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  applyFilters(); $('#q').focus();
+};
+$('#moreBtn').onclick=()=>{ shown+=CFG.PAGE; renderList(); };
+$('#reload').onclick=loadAll;
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  state.tab=t.dataset.tab;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
+  $('#tab-surat').classList.toggle('hidden',state.tab!=='surat');
+  $('#tab-perling').classList.toggle('hidden',state.tab!=='perling');
+  $('#q').placeholder=state.tab==='surat'?'Cari: no. agenda, nomor surat, asal, perihal, petugas…  (contoh: pentawira 2026)':'Cari arahan perling: dokumen, keterangan, tanggal…';
+  state.tab==='surat'?applyFilters():renderPerling();
+  $('#q').focus();
+});
+$('#list').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-folder]'); if(!b) return;
+  const no=b.dataset.folder;
+  const ok=no?await copyText(no):false;
+  window.open(CFG.FOLDER_URL,'_blank','noopener');
+  toast(ok?`No. agenda ${no} disalin — tempel (Ctrl+V) di pencarian Drive`:'Folder Drive dibuka');
+});
+
+/* ================= START ================= */
+$('#q').focus();
+loadCache();
+loadAll();
+</script>
+</body>
+</html>
